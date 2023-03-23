@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 
+// TO DO Database will be added
 const users = [
     {
         id:1,
@@ -9,19 +10,19 @@ const users = [
     }
 ];
 
-//user {GET}
+//users {GET}
 router.get('',(req,res)=>{
     res.send(users);
 })
 
-// user/:id {GET}
+// users/:id {GET}
 router.get('/:id',(req,res)=>{
     const {id} = req.params;
     const user = users.find((user)=>user.id === parseInt(id));
     res.send(user);
 })
 
-// user {POST}
+// users {POST}
 router.post('',(req,res)=>{
     const newUser = req.body;
     newUser.id = users.length + 1;
