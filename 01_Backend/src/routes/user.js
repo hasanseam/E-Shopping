@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const router = Router();
+const User = require('../databaseMongo/schemas/User')
 
 // TO DO Database will be added
 const users = [
@@ -28,6 +29,18 @@ router.post('',(req,res)=>{
     newUser.id = users.length + 1;
     users.push(newUser);
     res.sendStatus(200);
+})
+
+// users/register
+router.post('/register', async (req,res)=>{
+    const {firstname,lastname,email,password} = req.body;
+    const userDB = await User.findOne({email});
+    if(userDB){
+        res.sendStatus(400).send("User already exist!");
+    } else {
+        const newUser = await User.create({firstname,lastname,email,password});
+        res.sendStatus(201)
+    }
 })
 
 module.exports = router;
