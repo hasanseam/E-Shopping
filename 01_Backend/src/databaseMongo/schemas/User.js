@@ -22,6 +22,13 @@ const UserSchema = new mongoose.Schema({
         required: true,
         default: new Date()
     },
+    address:{
+        streetName:{type:mongoose.SchemaTypes.String},
+        houseNo:{type:mongoose.SchemaTypes.Number},
+        postcode:{type:mongoose.SchemaTypes.Number},
+        city:{type:mongoose.SchemaTypes.String},
+        country:{type:mongoose.SchemaTypes.String}
+    }
 });
 
 module.exports = mongoose.model('user',UserSchema);

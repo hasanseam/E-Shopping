@@ -32,6 +32,7 @@ router.post('',(req,res)=>{
 })
 
 // users/register
+//TO DO: validation
 router.post('/register', async (req,res)=>{
     const {firstname,lastname,email,password} = req.body;
     const userDB = await User.findOne({email});
