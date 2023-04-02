@@ -2,6 +2,18 @@ const {Router} = require('express');
 const { findById } = require('../databaseMongo/schemas/Product');
 const router = Router();
 const Product = require('../databaseMongo/schemas/Product');
+const multer = require('multer');
+
+
+const storage = multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,'./uploads');
+    },
+    filename: (req,file,cb)=>{
+        cb(null,file.originalname);
+    }
+});
+const upload = multer({storage:storage});
 
 //products {GET}
 router.get('/',async (req,res)=>{
@@ -22,12 +34,18 @@ router.get('/:id', async (req,res)=>{
 });
 
 // products/add {POST}
-router.post('/add',(req,res)=>{
-    const {name,quantity,model} = req.body;
-    const newProduct = new Product({name:name,quantity:quantity,model:model});
+//TO DO validation
+router.post('/add',upload.single('productImage'),(req,res)=>{
+    console.log(req.file);
+    const {name,quantity} = req.body;
+    const newProduct = new Product({name:name,quantity:quantity});
     newProduct.save()
+               .then(result=>{
+                console.log(result)
+                res.sendStatus(201);
+               })
               .catch((error)=>console.error("Error while saving product",error));
-    res.sendStatus(200);
+    
 });
 
 //product delete
@@ -40,6 +58,7 @@ router.delete('/delete/:id',(req,res)=>{
 });
 
 //product update
+//TO DO validation
 router.patch('/edit/:id',async (req,res)=>{
     const {id} = req.params;
     const updatePortion = req.body;
