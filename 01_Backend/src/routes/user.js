@@ -14,14 +14,19 @@ const users = [
 //users {GET}
 router.get('/',async (req,res)=>{
     const users = await User.find();
-    res.send(users);
+    res.json({data:users});
 })
 
 // users/:id {GET}
-router.get('/:id',(req,res)=>{
+router.get('/:id', async (req,res)=>{
     const {id} = req.params;
-    const user = users.find((user)=>user.id === parseInt(id));
-    res.send(user);
+    try {
+        const user = await User.findById(id);
+        console.log(user);
+        res.json({data:user}); 
+    } catch (error) {
+        res.status(400).json({"data":"Error","message":error.message});
+    }
 })
 
 // users/register
