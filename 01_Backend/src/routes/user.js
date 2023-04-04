@@ -12,7 +12,8 @@ const users = [
 ];
 
 //users {GET}
-router.get('',(req,res)=>{
+router.get('/',async (req,res)=>{
+    const users = await User.find();
     res.send(users);
 })
 
@@ -23,21 +24,12 @@ router.get('/:id',(req,res)=>{
     res.send(user);
 })
 
-// users {POST}
-router.post('',(req,res)=>{
-    const newUser = req.body;
-    newUser.id = users.length + 1;
-    users.push(newUser);
-    res.sendStatus(200);
-})
-
 // users/register
 //TO DO: validation
 router.post('/register', async (req,res)=>{
     const {firstname,lastname,email,password} = req.body;
     const userDB = await User.findOne({email});
     if(userDB){
-        console.log(userDB);
         res.status(400).send("User already exist!");
     } else {
         const newUser = await User.create({firstname,lastname,email,password});
