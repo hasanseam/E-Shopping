@@ -13,12 +13,26 @@ const storage = multer.diskStorage({
         cb(null,file.originalname);
     }
 });
+
+const fileFIlter = (req,file,cb)=>{
+    if(file.mimetype==='image.jpg'){
+        cb(null,true);
+    }
+    else{
+        cb(null,false);
+    }
+}
+
 const upload = multer({storage:storage});
 
 //products {GET}
-router.get('/',async (req,res)=>{
-    const products = await Product.find();
-    res.send(products);
+router.get('/',async(req,res)=>{
+    try {
+        const products = await Product.find();
+        res.status(200).json({"data":products});
+    } catch (error) {
+        res.status(500).json({"error":error});
+    }
 });
 
 // products/:id {GET}
@@ -26,25 +40,25 @@ router.get('/:id', async (req,res)=>{
     const {id} = req.params;
     try {
         const product = await Product.findById(id);
-        res.send(product); 
+        if(product) res.status(200).json({"data":product})
+        else res.status(404).json({"data":"No data found"})
     } catch (error) {
-        res.send(error);
+        res.status(500).json({"error":error});
     }
-
 });
 
 // products/add {POST}
 //TO DO validation
 router.post('/add',upload.single('productImage'),(req,res)=>{
-    console.log(req.file);
     const {name,quantity} = req.body;
     const newProduct = new Product({name:name,quantity:quantity});
     newProduct.save()
                .then(result=>{
-                console.log(result)
                 res.sendStatus(201);
                })
-              .catch((error)=>console.error("Error while saving product",error));
+              .catch((error)=>{
+                res.status(500).json({"error":error});
+              });
     
 });
 
@@ -53,8 +67,8 @@ router.post('/add',upload.single('productImage'),(req,res)=>{
 router.delete('/delete/:id',(req,res)=>{
     const {id} = req.params;
     Product.deleteOne({_id:id})
-           .then((result)=>{res.sendStatus(200)})
-           .catch((error)=>{res.status(`Error: ${error}`)})
+           .then((result)=>{res.status(200).json({"message":"deleted"})})
+           .catch((error)=>{res.status(500).json({"error":error})});
 });
 
 //product update
@@ -64,12 +78,16 @@ router.patch('/edit/:id',async (req,res)=>{
     const updatePortion = req.body;
     try {
         const product  = await Product.findById(id);
-        const updatedPorducts = Object.assign(product,updatePortion);
-        updatedPorducts.save();
-        res.send(updatedPorducts);
+        if(product){
+            const updatedPorducts = Object.assign(product,updatePortion);
+            updatedPorducts.save();
+            res.status(200).json({message:"updated",data:updatedPorducts});
+        }else{
+            res.status(404).json({"message":`No product found with ${id}`})
+        }
+
     } catch (error) {
-        res.send(error)
-        console.log(error)
+        res.status(500).json({"error":error});
     }
 })
 

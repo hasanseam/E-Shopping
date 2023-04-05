@@ -5,6 +5,10 @@ const ProductSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required:true
     },
+    price:{
+        type: mongoose.SchemaTypes.String,
+        required:true
+    },
     image:{
         type:mongoose.SchemaTypes.String,
     },

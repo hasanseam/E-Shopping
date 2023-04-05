@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const bodyParser = require('body-parser')
 
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
@@ -11,11 +12,25 @@ const app = express();
 require('./databaseMongo/database');
 
 app.use(morgan('dev'));
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(cookieParser());
 
-//Routers
 
+app.use((req,res,next)=>{
+    res.header('Access-Control-Allow-Origin',"*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization" 
+    );
+    if(req.method === "OPTIONS"){
+        res.header('Access-Control-Allow-Methods','PUT,POST,PATCH,DELETE');
+        return res.status(200).json({});
+    }
+    next();
+});
+
+
+//Routers
 //user router
 app.use('/users',userRoutes);
 //product router
@@ -27,7 +42,6 @@ app.use((req,res,next)=>{
     error.status = 404
     next(error);
 });
-
 app.use((error,req,res,next)=>{
     res.status(error.status||500);
     res.json({
