@@ -27,6 +27,7 @@ const upload = multer({storage:storage});
 
 //products {GET}
 router.get('/',async(req,res)=>{
+    console.log("Hello World");
     try {
         const products = await Product.find();
         res.status(200).json({"data":products});
