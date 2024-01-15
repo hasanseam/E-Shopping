@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+@include mat.core();
+@import "./palletes.scss";
+
+$app-primary: mat.define-palette($app-moss-green-palette, 500);
+$app-accent: mat.define-palette($app-moss-green-palette,500); // to do: change
+$app-warn: mat.define-palette(mat.$red-palette, 900);
+
+$my-theme: mat.define-light-theme((
+    color: (
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
+    ),
+  ));
+
+  $my-neutral-background: #E0E0E0; // Light Gray
+  $my-complementary-neutral: #F5F5F5; // Off-White
+
+  body {
+    background-color: $my-neutral-background;
+  }
+
+  @include mat.all-component-themes($my-theme);
