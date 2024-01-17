@@ -1,0 +1,33 @@
+
+.container{
+    background-color: pink;
+    padding: 10px;
+    display:flex ;
+    flex-direction: row;
+    justify-content: space-between ;
+    align-items: center;
+}
+
+.nav-container{
+    display:flex ;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.container a{
+    text-decoration: none;
+    color: black;
+}
+
+.container a:hover{
+    font-weight: bold;
+}
+
+
+
+.item{
+    color: black;
+    font-size: 15px;
+    margin: 5px 25px 5px 0px;
+}

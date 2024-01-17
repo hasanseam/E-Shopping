@@ -1,0 +1,17 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; //used to align item center
+    height: 100vh;
+}
+
+.custom-input {
+    width: 90%; /* Set the width to 100% initially */
+    @media (min-width: 600px) {
+        width: 45%; /* Adjust the width for larger screens */
+    }
+    @media (min-width: 900px) {
+        width: 30%; /* Adjust the width for even larger screens */
+    }
+}

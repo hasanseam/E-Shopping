@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const autoIncreament = require('mongoose-auto-increment');
+//const autoIncreament = require('mongoose-auto-increment');
 
 const UserSchema = new mongoose.Schema({
     firstname:{

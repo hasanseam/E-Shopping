@@ -1,6 +1,9 @@
 const {Router} = require('express');
 const router = Router();
-const User = require('../databaseMongo/schemas/User')
+const passport = require('passport');
+const User = require('../databaseMongo/schemas/User');
+
+const {hashPassword,comparePassword} = require('../utils/helpers'); 
 
 //users {GET}
 router.get('/',async (req,res)=>{
@@ -19,17 +22,5 @@ router.get('/:id', async (req,res)=>{
     }
 })
 
-// users/register
-//TO DO: validation
-router.post('/register', async (req,res)=>{
-    const {firstname,lastname,email,password} = req.body;
-    const userDB = await User.findOne({email});
-    if(userDB){
-        res.status(400).send("User already exist!");
-    } else {
-        const newUser = await User.create({firstname,lastname,email,password});
-        res.sendStatus(201)
-    }
-})
 
 module.exports = router;

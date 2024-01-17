@@ -3,10 +3,14 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const bodyParser = require('body-parser')
+const session = require('express-session');
+const passport = require('passport'); // for authentication
+require('./strategies/local');
 
+// router
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
-
+const authRoutes = require('./routes/auth');
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -24,12 +28,30 @@ app.use((req,res,next)=>{
     }
     next();
 });
+//session middleware
+app.use(session({
+    secret:"asjdkadklasjdkdsljfsdrsmvn",
+    resave:false,
+    saveUninitialized:false,
+}));
+//
+app.use(passport.initialize());
+app.use(passport.session());
+
+const isAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next(); // If authenticated, continue to the next middleware
+    }
+    res.status(401).json({ message: 'Unauthorized' });
+  };
 
 //Routers
 //user router
 app.use('/users',userRoutes);
 //product router
-app.use('/products',productRoutes);
+app.use('/products', isAuthenticated, productRoutes);
+//auth router
+app.use('/auth',authRoutes);
 
 //Error Handler
 app.use((req,res,next)=>{
