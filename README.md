@@ -2,7 +2,7 @@
 
 ![E-Shopping Logo](e-shopping-logo.png)
 
-Welcome to E-Shopping, an e-commerce web application developed as a personal project of my continuous learning. This web app is built using Express.js and Angular, and it aims to provide a seamless shopping experience for users. Whether you're a developer looking for inspiration or a potential user interested in exploring the platform, this README will give you an overview of the project.
+Welcome to E-Shopping, an e-commerce web application developed as a personal project of my continuous learning. This web app is built using Express.js(Backend 1),Spring Boot(Backend 2) and Angular, and it aims to provide a seamless shopping experience for users. Whether you're a developer looking for inspiration or a potential user interested in exploring the platform, this README will give you an overview of the project.
 
 ## Table of Contents
 
